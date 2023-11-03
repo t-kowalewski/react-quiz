@@ -3,18 +3,22 @@ import { useState, useEffect } from 'react';
 const QuestionTimer = ({ time, onTimeout }) => {
   const [remTime, setRemTime] = useState(time);
 
+  // controls when to switch to another question if inactive
   useEffect(() => {
-    // console.log('timeout running');
-    setTimeout(onTimeout, time);
-  }, [time]);
+    const timer = setTimeout(onTimeout, time);
 
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [time, onTimeout]);
+
+  // controls progress bar
   useEffect(() => {
     const interval = setInterval(() => {
       setRemTime((prevState) => {
-        console.log('interval running');
-        return prevState - 1000;
+        return prevState - 10;
       });
-    }, 1000);
+    }, 10);
 
     return () => {
       clearInterval(interval);

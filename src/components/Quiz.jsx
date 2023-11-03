@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import quizCompleteImg from '../assets/quiz-complete.png';
 import questions from '../questions';
@@ -20,6 +20,10 @@ const Quiz = () => {
     });
   };
 
+  const skipAnswerHandler = useCallback(() => {
+    setUserAnswers((prevState) => [...prevState, null]);
+  }, []);
+
   if (showQuiz) {
     const shuffledAnswers = [...questions[activeQuestionIndex].answers];
     shuffledAnswers.sort((a, b) => Math.random() - 0.5);
@@ -38,11 +42,11 @@ const Quiz = () => {
               );
             })}
           </ul>
+
           <QuestionTimer
-            time={15000}
-            onTimeout={() => {
-              setUserAnswers((prevState) => [...prevState, null]);
-            }}
+            key={activeQuestionIndex}
+            time={10000}
+            onTimeout={skipAnswerHandler}
           />
         </div>
       </div>
