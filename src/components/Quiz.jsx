@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import quizCompleteImg from '../assets/quiz-complete.png';
 import questions from '../questions';
+import QuestionTimer from './QuestionTimer';
 
 const Quiz = () => {
   // we'll have array of questions and will track user answers and active question index
@@ -37,6 +38,12 @@ const Quiz = () => {
               );
             })}
           </ul>
+          <QuestionTimer
+            time={15000}
+            onTimeout={() => {
+              setUserAnswers((prevState) => [...prevState, null]);
+            }}
+          />
         </div>
       </div>
     );
