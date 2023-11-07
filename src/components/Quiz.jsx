@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 import quizCompleteImg from '../assets/quiz-complete.png';
 import questions from '../questions';
+import Answers from './Answers';
 import QuestionTimer from './QuestionTimer';
 
 const Quiz = () => {
+  const shuffledAnswers = useRef(null);
   const [answerState, setAnswerState] = useState('');
   // we'll have array of questions and will track user answers and active question index
 
@@ -35,54 +37,39 @@ const Quiz = () => {
       // Resetting answer
       setTimeout(() => {
         setAnswerState('');
+        shuffledAnswers.current = null;
       }, 2000);
     }, 1000);
   };
 
   const skipAnswerHandler = useCallback(() => {
     setUserAnswers((prevState) => [...prevState, null]);
+    shuffledAnswers.current = null;
   }, []);
 
   if (showQuiz) {
-    const shuffledAnswers = [...questions[activeQuestionIndex].answers];
-    shuffledAnswers.sort((a, b) => Math.random() - 0.5);
+    if (!shuffledAnswers.current) {
+      shuffledAnswers.current = [...questions[activeQuestionIndex].answers];
+      shuffledAnswers.current.sort((a, b) => Math.random() - 0.5);
+    }
 
     return (
       <div id='quiz'>
         <div id='question'>
           <h3>{questions[activeQuestionIndex].text}</h3>
 
-          <ul id='answers'>
-            {shuffledAnswers.map((answer, ind) => {
-              let answerClass = '';
-              const isSelected = answer === userAnswers[userAnswers.length - 1];
+          <Answers
+            answers={shuffledAnswers.current}
+            answerState={answerState}
+            userAnswers={userAnswers}
+            onSelectAnswer={selectAnswerHandler}
+          />
 
-              if (isSelected && answerState === 'answered') {
-                answerClass = 'selected';
-              }
-
-              if (
-                isSelected &&
-                (answerState === 'correct' || answerState === 'wrong')
-              ) {
-                answerClass = answerState;
-              }
-
-              return (
-                <li key={ind} className='answer'>
-                  <button className={answerClass} onClick={selectAnswerHandler}>
-                    {answer}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* <QuestionTimer
+          <QuestionTimer
             key={activeQuestionIndex}
             time={10000}
             onTimeout={skipAnswerHandler}
-          /> */}
+          />
         </div>
       </div>
     );
