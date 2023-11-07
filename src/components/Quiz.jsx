@@ -1,12 +1,10 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 
 import quizCompleteImg from '../assets/quiz-complete.png';
 import questions from '../questions';
-import Answers from './Answers';
-import QuestionTimer from './QuestionTimer';
+import Question from './Question';
 
 const Quiz = () => {
-  const shuffledAnswers = useRef(null);
   const [answerState, setAnswerState] = useState('');
   // we'll have array of questions and will track user answers and active question index
 
@@ -37,40 +35,26 @@ const Quiz = () => {
       // Resetting answer
       setTimeout(() => {
         setAnswerState('');
-        shuffledAnswers.current = null;
       }, 2000);
     }, 1000);
   };
 
   const skipAnswerHandler = useCallback(() => {
     setUserAnswers((prevState) => [...prevState, null]);
-    shuffledAnswers.current = null;
   }, []);
 
   if (showQuiz) {
-    if (!shuffledAnswers.current) {
-      shuffledAnswers.current = [...questions[activeQuestionIndex].answers];
-      shuffledAnswers.current.sort((a, b) => Math.random() - 0.5);
-    }
-
     return (
       <div id='quiz'>
-        <div id='question'>
-          <h3>{questions[activeQuestionIndex].text}</h3>
-
-          <Answers
-            answers={shuffledAnswers.current}
-            answerState={answerState}
-            userAnswers={userAnswers}
-            onSelectAnswer={selectAnswerHandler}
-          />
-
-          <QuestionTimer
-            key={activeQuestionIndex}
-            time={10000}
-            onTimeout={skipAnswerHandler}
-          />
-        </div>
+        <Question
+          key={activeQuestionIndex}
+          questionText={questions[activeQuestionIndex].text}
+          answers={questions[activeQuestionIndex].answers}
+          answerState={answerState}
+          selectedAnswer={userAnswers[userAnswers.length - 1]}
+          onSelectAnswer={selectAnswerHandler}
+          onSkipAnswer={skipAnswerHandler}
+        />
       </div>
     );
   } else {

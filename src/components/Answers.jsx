@@ -1,9 +1,18 @@
-const Answers = ({ answers, answerState, userAnswers, onSelectAnswer }) => {
+import { useRef } from 'react';
+
+const Answers = ({ answers, answerState, selectedAnswer, onSelectAnswer }) => {
+  const shuffledAnswers = useRef(null);
+
+  if (!shuffledAnswers.current) {
+    shuffledAnswers.current = [...answers];
+    shuffledAnswers.current.sort((a, b) => Math.random() - 0.5);
+  }
+
   return (
     <ul id='answers'>
-      {answers.map((answer) => {
+      {shuffledAnswers.current.map((answer) => {
         let answerClass = '';
-        const isSelected = answer === userAnswers[userAnswers.length - 1];
+        const isSelected = answer === selectedAnswer;
 
         if (isSelected && answerState === 'answered') {
           answerClass = 'selected';
