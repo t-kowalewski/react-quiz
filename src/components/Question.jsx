@@ -17,6 +17,15 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
     answerState = 'answered';
   }
 
+  // Adjust timer for progress bar to not clash with handler
+  let timer = 10000;
+  if (answer.selectedAnswer) {
+    timer = 1000;
+  }
+  if (answer.isCorrect !== null) {
+    timer = 2000;
+  }
+
   const selectAnswerHandler = (answer) => {
     setAnswer({
       selectedAnswer: answer,
@@ -46,7 +55,12 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
         onSelectAnswer={selectAnswerHandler}
       />
 
-      {/* <QuestionTimer time={10000} onTimeout={onSkipAnswer} /> */}
+      <QuestionTimer
+        key={timer}
+        time={timer}
+        onTimeout={answer.selectedAnswer === '' ? onSkipAnswer : null}
+        mode={answerState}
+      />
     </div>
   );
 };

@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 
-const QuestionTimer = ({ time, onTimeout }) => {
+const QuestionTimer = ({ time, onTimeout, mode }) => {
   const [remTime, setRemTime] = useState(time);
 
   // controls when to switch to another question if inactive
   useEffect(() => {
-    const timer = setTimeout(onTimeout, time);
+    let timer;
+    if (onTimeout !== null) {
+      timer = setTimeout(onTimeout, time);
+    }
 
     return () => {
       clearTimeout(timer);
@@ -25,7 +28,14 @@ const QuestionTimer = ({ time, onTimeout }) => {
     };
   }, []);
 
-  return <progress id='question-time' max={time} value={remTime}></progress>;
+  return (
+    <progress
+      id='question-time'
+      max={time}
+      value={remTime}
+      className={mode}
+    ></progress>
+  );
 };
 
 export default QuestionTimer;
