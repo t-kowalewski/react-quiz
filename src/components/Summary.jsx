@@ -1,7 +1,7 @@
 import questions from '../questions';
 import quizCompleteImg from '../assets/quiz-complete.png';
 
-const Summary = ({ userAnswers }) => {
+const Summary = ({ userAnswers, onReset }) => {
   const skippedAnswers = userAnswers.filter((answer) => {
     return answer === null;
   });
@@ -20,7 +20,7 @@ const Summary = ({ userAnswers }) => {
 
   return (
     <div id='summary'>
-      <img src={quizCompleteImg} alt='Trophy Icon' />
+      <img src={quizCompleteImg} alt='Trophy Icon' onClick={onReset} />
       <h2>Quiz Completed!</h2>
 
       {/* Stats */}

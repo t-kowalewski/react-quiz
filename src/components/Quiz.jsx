@@ -12,7 +12,7 @@ const Quiz = () => {
 
   const showQuiz = activeQuestionIndex < questions.length; //derived state - to know when questions are over
 
-  console.log(userAnswers);
+  // console.log(userAnswers);
 
   const selectAnswerHandler = (selectedAnswer) => {
     setUserAnswers((prevState) => {
@@ -23,6 +23,10 @@ const Quiz = () => {
   const skipAnswerHandler = useCallback(() => {
     setUserAnswers((prevState) => [...prevState, null]);
   }, []);
+
+  const resetQuizHandler = () => {
+    setUserAnswers([]);
+  };
 
   if (showQuiz) {
     return (
@@ -36,7 +40,7 @@ const Quiz = () => {
       </div>
     );
   } else {
-    return <Summary userAnswers={userAnswers} />;
+    return <Summary userAnswers={userAnswers} onReset={resetQuizHandler} />;
   }
 };
 

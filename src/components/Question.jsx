@@ -19,7 +19,7 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
   }
 
   // adjust timer for progress bar to be in sync with handler
-  let timer = 10000;
+  let timer = 15000;
   if (answer.selectedAnswer) {
     timer = 1000;
   }
