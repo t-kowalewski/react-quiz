@@ -288,7 +288,7 @@ header h1 {
 }
 
 #summary .user-answer.skipped {
-  color: #d1baf2;
+  color: #eccf27;
   font-weight: normal;
 }
 
@@ -329,6 +329,7 @@ header h1 {
     opacity: 0;
     transform: translateY(10%);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);

@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 
-import quizCompleteImg from '../assets/quiz-complete.png';
 import questions from '../questions';
 import Question from './Question';
+import Summary from './Summary';
 
 const Quiz = () => {
   // we'll have array of questions and will track user answers and active question index
@@ -36,12 +36,7 @@ const Quiz = () => {
       </div>
     );
   } else {
-    return (
-      <div id='summary'>
-        <img src={quizCompleteImg} alt='Trophy Icon' />
-        <h2>Quiz Completed!</h2>
-      </div>
-    );
+    return <Summary userAnswers={userAnswers} />;
   }
 };
 
