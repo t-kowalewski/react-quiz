@@ -10,6 +10,7 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
     isCorrect: null,
   });
 
+  // answer state, derived from "answer"
   let answerState = '';
   if (answer.selectedAnswer && answer.isCorrect !== null) {
     answerState = answer.isCorrect ? 'correct' : 'wrong';
@@ -17,7 +18,7 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
     answerState = 'answered';
   }
 
-  // Adjust timer for progress bar to not clash with handler
+  // adjust timer for progress bar to be in sync with handler
   let timer = 10000;
   if (answer.selectedAnswer) {
     timer = 1000;
@@ -56,10 +57,10 @@ const Question = ({ questionIndex, onSelectAnswer, onSkipAnswer }) => {
       />
 
       <QuestionTimer
-        key={timer}
+        key={timer} // to be able to reset interval inside
         time={timer}
         onTimeout={answer.selectedAnswer === '' ? onSkipAnswer : null}
-        mode={answerState}
+        mode={answerState} // for css styling
       />
     </div>
   );
